@@ -31,6 +31,20 @@ Base: `/api`. Sin autenticación real (HU1 es solo frontend con credenciales est
 En desarrollo el frontend usa el proxy de Vite (`/api` → `127.0.0.1:8000`), por lo
 que CORS no llega a activarse en local; queda configurado para despliegues separados.
 
+## Seguridad de la API
+
+- **Rate limiting**: `throttleApi('api')` en `bootstrap/app.php` + limiter
+  `RateLimiter::for('api', ...)` en `AppServiceProvider` — 60 req/min por IP
+  en todas las rutas `/api/*`. Headers `X-RateLimit-Limit` / `-Remaining`
+  verificados.
+- **IDOR en rutas anidadas**: `LoteController@update`/`@destroy` recibían
+  `Lote $lote` con binding implícito global, permitiendo editar/eliminar un
+  lote de OTRA hacienda pasando su id por una URL con `hacienda_id`
+  incorrecto (ej. `PUT /haciendas/2/lotes/1` donde el lote 1 es de la
+  hacienda 1). Corregido: el lote ahora se resuelve vía
+  `$hacienda->lotes()->findOrFail($loteId)`, forzando que pertenezca a la
+  hacienda de la URL o devuelva 404.
+
 ## Decisiones
 
 - MySQL en vez de SQL Server: entorno local (Laragon) ya tenía MySQL disponible,

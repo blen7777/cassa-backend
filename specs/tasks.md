@@ -13,6 +13,8 @@ Estado respecto a [`requirements.md`](./requirements.md).
 - [x] CORS configurado para `FRONTEND_URL`
 - [x] Datos semilla para demo (`database/schema.sql` no las incluye; insertadas manualmente en local)
 - [x] Verificación end-to-end vía curl (create/update/delete/validaciones/409)
+- [x] Rate limiting (60 req/min/IP) en todas las rutas `/api/*`
+- [x] Fix IDOR: lotes anidados scoped a su hacienda (`findOrFail` sobre la relación)
 
 ## Pendiente / mejoras futuras
 

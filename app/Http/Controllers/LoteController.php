@@ -35,8 +35,10 @@ class LoteController extends Controller
         return response()->json($lote, 201);
     }
 
-    public function update(Request $request, Hacienda $hacienda, Lote $lote)
+    public function update(Request $request, Hacienda $hacienda, int $loteId)
     {
+        $lote = $hacienda->lotes()->findOrFail($loteId);
+
         $data = $request->validate([
             'nombre' => ['required', 'string', 'max:200'],
             'hectareas' => ['nullable', 'numeric', 'min:0'],
@@ -48,8 +50,10 @@ class LoteController extends Controller
         return response()->json($lote);
     }
 
-    public function destroy(Hacienda $hacienda, Lote $lote)
+    public function destroy(Hacienda $hacienda, int $loteId)
     {
+        $lote = $hacienda->lotes()->findOrFail($loteId);
+
         $lote->delete();
 
         return response()->json(null, 204);
