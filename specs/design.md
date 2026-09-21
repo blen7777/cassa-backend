@@ -1,0 +1,38 @@
+# Diseño técnico — Backend
+
+Ver requerimientos completos en [`requirements.md`](./requirements.md).
+
+## Base de datos
+
+- Motor: MySQL 8 (local, vía Laragon). Compatible con cualquier motor relacional.
+- Esquema creado directamente por SQL (`database/schema.sql`), **sin** migraciones
+  de Laravel, según lo exigido por la especificación.
+- Tablas: `responsables`, `haciendas`, `lotes` (FK `lotes.hacienda_id → haciendas.id`).
+- Modelos Eloquent (`app/Models/*`) mapean estas tablas vía `$table` explícito.
+
+## API REST
+
+Base: `/api`. Sin autenticación real (HU1 es solo frontend con credenciales estáticas).
+
+| Método | Ruta | Controller | Notas |
+|---|---|---|---|
+| GET | `/dashboard/summary` | `DashboardController@summary` | Conteos activos de las 3 entidades |
+| GET/POST | `/responsables` | `ResponsableController` | |
+| GET/PUT/DELETE | `/responsables/{id}` | `ResponsableController` | |
+| GET/POST | `/haciendas` | `HaciendaController` | |
+| GET/PUT/DELETE | `/haciendas/{id}` | `HaciendaController` | Delete devuelve 409 si tiene lotes asociados (FK) |
+| GET/POST | `/haciendas/{hacienda}/lotes` | `LoteController` | Anidado, filtra por hacienda |
+| PUT/DELETE | `/haciendas/{hacienda}/lotes/{lote}` | `LoteController` | |
+
+## CORS
+
+`config/cors.php` permite origen `FRONTEND_URL` (`http://localhost:5173`).
+En desarrollo el frontend usa el proxy de Vite (`/api` → `127.0.0.1:8000`), por lo
+que CORS no llega a activarse en local; queda configurado para despliegues separados.
+
+## Decisiones
+
+- MySQL en vez de SQL Server: entorno local (Laragon) ya tenía MySQL disponible,
+  ahorra tiempo de setup bajo la ventana de 1 hora. Cumple "cualquier motor relacional".
+- Validación de eliminación con integridad referencial: se captura `QueryException`
+  en `HaciendaController@destroy` y se responde 409 con mensaje claro en vez de un 500 genérico.

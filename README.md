@@ -2,6 +2,10 @@
 
 API REST para la prueba técnica full-stack agrícola.
 
+> **Spec-driven development:** todo cambio futuro debe partir de lo documentado
+> en [`specs/`](./specs/requirements.md) (requerimientos, diseño técnico y
+> tareas). Si un cambio no está reflejado ahí, actualizar los specs primero.
+
 ## Requisitos
 
 - PHP 8.3+, Composer
