@@ -74,7 +74,43 @@ php artisan serve
 
 `database/schema.sql` contiene el DDL (`CREATE TABLE`, llaves foráneas e
 índices) para `responsables`, `haciendas` y `lotes`, construido a partir de
-`prueba_tenica_base_de_datos.html`.
+[`specs/database/schema-spec.html`](./specs/database/schema-spec.html).
+**No usan migraciones de Laravel** — se crean directamente con ese script.
+
+### `responsables`
+
+| Campo | Tipo | Nulo | Notas |
+|---|---|---|---|
+| id | INT PK autoincrement | No | |
+| nombre | VARCHAR(150) | No | |
+| apellido | VARCHAR(150) | Sí | |
+| correo | VARCHAR(255) | Sí | |
+| telefono | VARCHAR(30) | Sí | |
+| estatus | TINYINT(1) | No | Default `1` (Activo). Indexado. |
+| created_at / updated_at | TIMESTAMP | Sí | |
+
+### `haciendas`
+
+| Campo | Tipo | Nulo | Notas |
+|---|---|---|---|
+| id | INT PK autoincrement | No | |
+| nombre | VARCHAR(200) | No | |
+| ubicacion | VARCHAR(255) | Sí | |
+| estatus | TINYINT(1) | No | Default `1` (Activo). Indexado. |
+| created_at / updated_at | TIMESTAMP | Sí | |
+
+### `lotes`
+
+| Campo | Tipo | Nulo | Notas |
+|---|---|---|---|
+| id | INT PK autoincrement | No | |
+| hacienda_id | INT FK → haciendas.id | No | Indexado |
+| nombre | VARCHAR(200) | No | |
+| hectareas | DECIMAL(12,2) | Sí | |
+| estatus | TINYINT(1) | No | Default `1` (Activo). Indexado. |
+| created_at / updated_at | TIMESTAMP | Sí | |
+
+**Relación:** una hacienda tiene muchos lotes (`haciendas 1—N lotes`).
 
 ## Endpoints principales
 
