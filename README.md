@@ -17,7 +17,7 @@ php artisan key:generate
 
 Variables de entorno relevantes (`.env`):
 
-```
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
