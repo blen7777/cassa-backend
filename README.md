@@ -1,10 +1,35 @@
 # CASSA Agrícola — Backend (Laravel)
 
-API REST para la prueba técnica full-stack agrícola.
+API REST para la prueba técnica full-stack agrícola: gestión de haciendas,
+lotes y responsables, más un dashboard de resumen. Repo hermano del
+frontend: [`cassa-frontend`](https://github.com/blen7777/cassa-frontend).
 
 > **Spec-driven development:** todo cambio futuro debe partir de lo documentado
 > en [`specs/`](./specs/requirements.md) (requerimientos, diseño técnico y
 > tareas). Si un cambio no está reflejado ahí, actualizar los specs primero.
+
+## Estructura del proyecto
+
+```
+backend/
+├── app/
+│   ├── Http/Controllers/    # ResponsableController, HaciendaController,
+│   │                        # LoteController, DashboardController, HealthController
+│   ├── Models/               # Hacienda, Lote, Responsable, User
+│   └── Providers/            # AppServiceProvider (rate limiter "api")
+├── database/
+│   └── schema.sql            # DDL de responsables/haciendas/lotes (sin migraciones)
+├── routes/
+│   ├── api.php                # Rutas /api/* (REST + anidadas)
+│   └── web.php
+├── specs/                     # Requerimientos, diseño y tareas (spec-driven dev)
+│   ├── requirements.md
+│   ├── design.md
+│   ├── tasks.md
+│   ├── database/schema-spec.html
+│   └── requirements/prueba-tecnica-fullstack.pdf
+└── config/                    # cors.php, database.php, etc.
+```
 
 ## Requisitos
 
@@ -62,3 +87,12 @@ php artisan serve
 | PUT/DELETE | `/api/haciendas/{id}`           | Editar / eliminar hacienda      |
 | GET/POST | `/api/haciendas/{id}/lotes`       | Listar / crear lotes de una hacienda |
 | PUT/DELETE | `/api/haciendas/{id}/lotes/{loteId}` | Editar / eliminar lote     |
+| GET | `/api/dashboard/haciendas-overview` | Detalle por hacienda (lotes/hectáreas) |
+| GET | `/api/health` | Verifica conexión a la base de datos |
+
+## Seguridad
+
+- Rate limiting: 60 solicitudes/min por IP en todas las rutas `/api/*`.
+- Rutas anidadas de lotes (`/haciendas/{id}/lotes/{loteId}`) validan que el
+  lote pertenezca a esa hacienda antes de editar/eliminar (evita IDOR).
+- Detalle completo en [`specs/design.md`](./specs/design.md#seguridad-de-la-api).
