@@ -17,6 +17,7 @@ Base: `/api`. Sin autenticación real (HU1 es solo frontend con credenciales est
 | Método | Ruta | Controller | Notas |
 |---|---|---|---|
 | GET | `/dashboard/summary` | `DashboardController@summary` | Conteos activos de las 3 entidades |
+| GET | `/dashboard/haciendas-overview` | `DashboardController@haciendasOverview` | Detalle por hacienda: lotes (activos/total) y hectáreas totales, vía `withCount`/`withSum` |
 | GET/POST | `/responsables` | `ResponsableController` | |
 | GET/PUT/DELETE | `/responsables/{id}` | `ResponsableController` | |
 | GET/POST | `/haciendas` | `HaciendaController` | |

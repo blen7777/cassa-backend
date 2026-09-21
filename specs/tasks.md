@@ -5,6 +5,7 @@ Estado respecto a [`requirements.md`](./requirements.md).
 - [x] Esquema SQL (`database/schema.sql`) creado según `database/schema-spec.html`
 - [x] Modelos Eloquent: `Hacienda`, `Lote` (con relación `hasMany`), `Responsable`
 - [x] `DashboardController@summary` — HU3
+- [x] `DashboardController@haciendasOverview` — tabla de detalle por hacienda (lotes/hectáreas) — HU3
 - [x] `ResponsableController` CRUD completo — HU4
 - [x] `HaciendaController` CRUD completo + manejo 409 en delete con lotes — HU5
 - [x] `LoteController` CRUD anidado y filtrado por hacienda — HU6

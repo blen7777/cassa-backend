@@ -38,6 +38,10 @@ tener panorama rápido al iniciar sesión.
 
 Evaluado: diseño de tarjetas, integración con endpoints GET de agregación.
 
+**Agregado (esencial, no en el enunciado):** tabla de detalle por hacienda
+(lotes activos/total, hectáreas totales) debajo de las cards — da contexto
+accionable más allá de los 3 contadores; clic en una fila navega a sus lotes.
+
 ## HU4 — Gestión de Responsables (CRUD) — Frontend + Backend (15 pts)
 
 - Listado de responsables.

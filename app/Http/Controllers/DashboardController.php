@@ -17,4 +17,26 @@ class DashboardController extends Controller
             'responsables_activos' => Responsable::where('estatus', true)->count(),
         ]);
     }
+
+    public function haciendasOverview(): JsonResponse
+    {
+        $haciendas = Hacienda::withCount([
+            'lotes',
+            'lotes as lotes_activos_count' => fn ($query) => $query->where('estatus', true),
+        ])
+            ->withSum('lotes', 'hectareas')
+            ->orderBy('nombre')
+            ->get()
+            ->map(fn ($hacienda) => [
+                'id' => $hacienda->id,
+                'nombre' => $hacienda->nombre,
+                'ubicacion' => $hacienda->ubicacion,
+                'estatus' => $hacienda->estatus,
+                'lotes_count' => $hacienda->lotes_count,
+                'lotes_activos_count' => $hacienda->lotes_activos_count,
+                'hectareas_totales' => $hacienda->lotes_sum_hectareas ?? 0,
+            ]);
+
+        return response()->json($haciendas);
+    }
 }
