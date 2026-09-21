@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Hacienda extends Model
 {
@@ -19,5 +20,10 @@ class Hacienda extends Model
         return [
             'estatus' => 'boolean',
         ];
+    }
+
+    public function lotes(): HasMany
+    {
+        return $this->hasMany(Lote::class);
     }
 }
